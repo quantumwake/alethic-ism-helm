@@ -1,0 +1,37 @@
+imagePullSecretName: regcred
+imagePullPolicy: Always
+
+# Default values for alethic-helm.
+# nameOverride: ""
+#postgres:
+#  user: "alethic"
+#  password: "ju$ta$imp|ep@$sw0rd"   # for production, consider using a more secure method
+#  database: "alethic"
+#  port: 5432
+
+global:
+
+  postgres:
+    user: "alethic"
+    password: "ju$ta$imp|epA$sw0rd"   # for production, consider using a more secure method
+    database: "alethic"
+    port: 5432
+
+
+
+  # application configuration
+  golang:
+    dsn: "host=localhost port=5432 user=postgres password=postgres1 dbname=postgres sslmode=disable"
+  python:
+    dbUrl: "{{ include \"alethichelm.postgres.dburl\" . }}"
+#    dbUrl: "postgresql://{{ .Values.postgres.user }}:{{ .Values.postgres.password }}@{{ include \"alethichelm.fullname\" . }}-postgres:5432/{{ .Values.postgres.database }}"
+#    dbUrl: "postgresql://postgres:postgres@alethic-postgresql.svc.default.cluster.local:5432/ism"
+  logging:
+    level: "debug"
+  routing:
+    natsUrl: nats://127.0.0.1:4222
+    file: ".routing.yaml"
+
+  k8s:
+    # helm chart / deployment configuration
+    routingSecretName: "{{ .Release.Name }}-alethic-routes-secret"

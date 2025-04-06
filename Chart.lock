@@ -1,0 +1,6 @@
+dependencies:
+- name: alethic-ism-api
+  repository: file://alethic-ism-api
+  version: 0.1.0
+digest: sha256:1cc40a5e4f9b68791d277240f99a7ce361332efb48e8493d35c59c3fc3da596c
+generated: "2025-04-05T12:57:05.021199-07:00"

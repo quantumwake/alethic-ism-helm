@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-api
+  tag: "1d6c0fd"
+  pullPolicy: Always
+
+# The secret that contains module-specific credentials
+#secretName: "alethic-ism-api-secret"
+
+api:
+  secretKey: 35a77a8d34bf5e048d545c277ef0c2b4a272db55c53da6bb4566f2ee2268d559
+  huggingFaceToken: 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
+  redisPass: qBfE4IRWub
+  redisHost: redis-release-master.redis.svc.cluster.local
+  redisPort: 6379
+  routingFile: /app/repo/.routing.yaml
+  logLevel: debug
+
+## Reference to the shared routing secret from the parent chart
+#routingSecretName: "alethic-ism-routes-secret"
+
+deployment:
+  labels:
+    app: alethic-ism-api
+
+service:
+  port: 80

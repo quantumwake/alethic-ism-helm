@@ -1,0 +1,124 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "alethichelm.postgres.name" . }}
+  namespace: "{{ .Release.Namespace }}"
+type: Opaque
+stringData:
+  postgres-password: {{ .Values.global.postgres.password | quote }}
+---
+# First, define a PVC for Postgres data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "alethichelm.postgres.name" . }}-data
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard  # Use your cluster's storage class or "local-storage" for kind
+  resources:
+    requests:
+      storage: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "alethichelm.postgres.name" . }}
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app: "postgres"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "postgres"
+  template:
+    metadata:
+      labels:
+        app: "postgres"
+
+    spec:
+      containers:
+      - name: postgres
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        image: postgres:13
+        env:
+          - name: POSTGRES_DB
+            value: {{ .Values.global.postgres.database | quote }}
+          - name: POSTGRES_USER
+            value: {{ .Values.global.postgres.user | quote }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "alethichelm.postgres.name" . }}
+                key: postgres-password
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+        readinessProbe:
+          exec:
+            command:
+              - pg_isready
+              - -U
+              - {{ .Values.global.postgres.user | quote }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+          - name: postgres-data
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: {{ include "alethichelm.postgres.name" . }}-data
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecretName }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "alethichelm.postgres.name" . }}
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  selector:
+    app: "postgres"
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+
+---
+# Separate Job to initialize the database after it's running
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "alethichelm.postgres.name" . }}-init
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    "helm.sh/hook": post-install #,post-upgrade TODO we will need to create a separate execution path for upgrades, we'll need to establish some so
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: init-db
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          image: krasaee/init-ismdb:local
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "alethichelm.postgres.name" . }}
+            - name: POSTGRES_DB
+              value: {{ .Values.global.postgres.database | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.global.postgres.user | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "alethichelm.postgres.name" . }}
+                  key: postgres-password
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecretName }}
+
