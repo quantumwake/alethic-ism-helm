@@ -1,0 +1,24 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "application.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "application.fullname" . }}
+{{/*  annotations:*/}}
+{{/*    # Adjust this annotation based on your ingress controller requirements.*/}}
+{{/*    nginx.ingress.kubernetes.io/rewrite-target: /$2*/}}
+spec:
+  rules:
+    - host: {{ .Values.ingress.host | default "localhost" }}
+      http:
+        paths:
+          - path: {{ .Values.env.variables.API_ROOT_PATH | default "/api/v1" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "application.fullname" . }}-service
+                port:
+                  number: {{ .Values.service.port | default 80 }}
+{{- end }}

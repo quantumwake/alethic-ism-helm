@@ -18,7 +18,7 @@ spec:
       volumes:
         - name: routing-secret-volume
           secret:
-            secretName: {{ tpl .Values.global.k8s.routingSecretName . }}
+            secretName: {{ tpl .Values.global.routing.secretName . }}
             items:
               - key: .routing.yaml
                 path: .routing.yaml
@@ -37,46 +37,28 @@ spec:
               mountPath: /app/repo/.routing.yaml
               subPath: .routing.yaml
               readOnly: true
+            {{- if .Values.env.variables.ENABLED_FIREBASE_AUTH }}
             - name: module-secret-volume
               mountPath: /app/repo/.firebase-credentials.json
               subPath: .firebase-credentials.json
               readOnly: true
+            {{- end }}
           env:
-            - name: HUGGING_FACE_TOKEN
+            {{- $root := . }}
+            {{- range $key, $value := .Values.env.variables }}
+            - name: {{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: HUGGING_FACE_TOKEN
-            - name: REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: REDIS_HOST
-            - name: REDIS_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: REDIS_PORT
-            - name: REDIS_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: REDIS_PASS
-            - name: ROUTING_FILE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: ROUTING_FILE
+                  name: {{ include "application.fullname" $root }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- if or (not .Values.env.variables.DATABASE_URL) (empty .Values.env.variables.DATABASE_URL) }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: {{ include "application.fullname" . }}
                   key: DATABASE_URL
-            - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "application.fullname" . }}
-                  key: SECRET_KEY
+            {{- end }}
           ports:
             - containerPort: {{ .Values.service.port }}
       imagePullSecrets:

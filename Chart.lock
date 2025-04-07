@@ -1,6 +1,12 @@
 dependencies:
+- name: nats
+  repository: https://nats-io.github.io/k8s/helm/charts/
+  version: 0.19.17
 - name: alethic-ism-api
   repository: file://alethic-ism-api
   version: 0.1.0
-digest: sha256:1cc40a5e4f9b68791d277240f99a7ce361332efb48e8493d35c59c3fc3da596c
-generated: "2025-04-05T12:57:05.021199-07:00"
+- name: alethic-ism-ui
+  repository: file://alethic-ism-ui
+  version: 0.1.0
+digest: sha256:f07361d7d21139b4d0118946ebbab9634a0fd1e2970c9e1f8b0c93c65080b9e4
+generated: "2025-04-06T13:06:12.678264-07:00"

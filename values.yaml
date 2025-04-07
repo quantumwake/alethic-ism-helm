@@ -1,3 +1,27 @@
+###############################################################################
+#### Local NATS Configuration values
+###############################################################################
+# NATS settings
+nats:
+  enabled: true
+  natsBox:
+    enabled: false
+  config:
+    jetstream:
+      enabled: true
+      memoryStore:
+        enabled: true
+        maxSize: 1Gi
+      fileStore:
+        enabled: true
+        pvc:
+          enabled: true
+          size: 1Gi
+
+
+###############################################################################
+#### Other
+###############################################################################
 imagePullSecretName: regcred
 imagePullPolicy: Always
 
@@ -17,21 +41,18 @@ global:
     database: "alethic"
     port: 5432
 
-
+  nats:
+    # url: "<overide to use your own nats server>"
+    url: "{{ include \"alethichelm.nats.url\" . }}"
 
   # application configuration
   golang:
     dsn: "host=localhost port=5432 user=postgres password=postgres1 dbname=postgres sslmode=disable"
   python:
     dbUrl: "{{ include \"alethichelm.postgres.dburl\" . }}"
-#    dbUrl: "postgresql://{{ .Values.postgres.user }}:{{ .Values.postgres.password }}@{{ include \"alethichelm.fullname\" . }}-postgres:5432/{{ .Values.postgres.database }}"
 #    dbUrl: "postgresql://postgres:postgres@alethic-postgresql.svc.default.cluster.local:5432/ism"
   logging:
     level: "debug"
   routing:
-    natsUrl: nats://127.0.0.1:4222
     file: ".routing.yaml"
-
-  k8s:
-    # helm chart / deployment configuration
-    routingSecretName: "{{ .Release.Name }}-alethic-routes-secret"
+    secretName: "{{ .Release.Name }}-routes-secret"

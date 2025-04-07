@@ -6,6 +6,17 @@ version: 0.1.0
 appVersion: "1.0"
 #icon: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png
 dependencies:
+  - name: nats
+    version: "0.19.x"  # Use the version you need
+    repository: "https://nats-io.github.io/k8s/helm/charts/"
+    condition: nats.enabled
+    alias: nats
+
   - name: alethic-ism-api
     version: 0.1.0
     repository: "file://alethic-ism-api"
+
+  - name: alethic-ism-ui
+    version: 0.1.0
+    repository: "file://alethic-ism-ui"
+

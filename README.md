@@ -31,7 +31,11 @@ sudo mv ./kind /usr/local/bin/kind
 
 #### Create Kind Cluster
 ```shell
+# if using the default kind config without
 kind create cluster
+
+# if directly mapping ports 8000 and 3000 to the cluster on the host
+kind create cluster --config=kind-config.yaml
 ```
 
 #### Setup Kind Local Storage Class (optional)
@@ -71,4 +75,11 @@ helm status test-release -n alethic
 
 ```shell
 kubectl get pods -n alethic
+```
+
+
+### Ingress Controller
+#### Install NGINX Ingress Controller (Kind Cluster)
+```shell
+kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
 ```

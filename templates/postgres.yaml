@@ -106,7 +106,7 @@ spec:
       containers:
         - name: init-db
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-          image: krasaee/init-ismdb:local
+          image: krasaee/alethic-ism-db:initdb.20250407
           env:
             - name: POSTGRES_HOST
               value: {{ include "alethichelm.postgres.name" . }}
