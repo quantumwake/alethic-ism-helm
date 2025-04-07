@@ -105,8 +105,8 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: init-db
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
-          image: krasaee/alethic-ism-db:initdb.20250407
+          imagePullPolicy: {{ .Values.global.postgres.initdb.image.pullPolicy }}
+          image: {{ .Values.global.postgres.initdb.image.repository }}:{{ .Values.global.postgres.initdb.image.tag }}
           env:
             - name: POSTGRES_HOST
               value: {{ include "alethichelm.postgres.name" . }}

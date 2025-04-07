@@ -40,6 +40,12 @@ global:
     password: "ju$ta$imp|epA$sw0rd"   # for production, consider using a more secure method
     database: "alethic"
     port: 5432
+    initdb:
+        enabled: true
+        image:
+            repository: krasaee/alethic-ism-db
+            tag: initdb.20250407
+            pullPolicy: Always
 
   nats:
     # url: "<overide to use your own nats server>"
