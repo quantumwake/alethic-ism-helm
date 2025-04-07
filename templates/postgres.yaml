@@ -43,7 +43,7 @@ spec:
       containers:
       - name: postgres
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        image: postgres:13
+        image: postgres:17
         env:
           - name: POSTGRES_DB
             value: {{ .Values.global.postgres.database | quote }}
