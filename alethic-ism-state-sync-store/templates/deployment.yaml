@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application.state.sync.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.deployment.labels.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.labels.app }}
+    spec:
+      volumes:
+        - name: routing-secret-volume
+          secret:
+            secretName: {{ tpl .Values.global.routing.secretName . }}
+            items:
+              - key: .routing.yaml
+                path: .routing.yaml
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: routing-secret-volume
+              mountPath: /app/repo/.routing.yaml
+              subPath: .routing.yaml
+              readOnly: true
+          env:
+            {{- $root := . }}
+            {{- range $key, $value := .Values.env.variables }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.state.sync.fullname" $root }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- if or (not .Values.env.variables.DATABASE_URL) (empty .Values.env.variables.DATABASE_URL) }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.state.sync.fullname" . }}
+                  key: DATABASE_URL
+            {{- end }}
+      imagePullSecrets:
+        - name: regcred
+

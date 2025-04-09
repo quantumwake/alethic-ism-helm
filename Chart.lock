@@ -1,12 +1,27 @@
 dependencies:
 - name: nats
   repository: https://nats-io.github.io/k8s/helm/charts/
-  version: 0.19.17
+  version: 1.3.2
+- name: nack
+  repository: https://nats-io.github.io/k8s/helm/charts/
+  version: 0.28.0
 - name: alethic-ism-api
   repository: file://alethic-ism-api
   version: 0.1.0
 - name: alethic-ism-ui
   repository: file://alethic-ism-ui
   version: 0.1.0
-digest: sha256:f07361d7d21139b4d0118946ebbab9634a0fd1e2970c9e1f8b0c93c65080b9e4
-generated: "2025-04-06T13:06:12.678264-07:00"
+- name: alethic-ism-monitor
+  repository: file://alethic-ism-monitor
+  version: 0.1.0
+- name: alethic-ism-state-router
+  repository: file://alethic-ism-state-router
+  version: 0.1.0
+- name: alethic-ism-state-sync-store
+  repository: file://alethic-ism-state-sync-store
+  version: 0.1.0
+- name: alethic-ism-processor-openai
+  repository: file://alethic-ism-processor-openai
+  version: 0.1.0
+digest: sha256:ac3528318a77e9428432dcfde656d6ab046a68cadb04ac2217815b68593e1863
+generated: "2025-04-08T18:57:24.225841-07:00"

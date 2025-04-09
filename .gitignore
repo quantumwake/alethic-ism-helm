@@ -2,4 +2,5 @@
 .venv
 .env
 .firebase-credentials.json
+.api-key
 charts

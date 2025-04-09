@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-state-sync-store
+  tag: "a0dde06"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-state-sync-store
+
+env:
+  variables:
+    API_ROOT_PATH: "/api/v1"
+    #REDIS_HOST: "http://localhost:8080"
+    #REDIS_PORT: ""
+    #REDIS_PASS: ""
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+#    DATABASE_URL: ""

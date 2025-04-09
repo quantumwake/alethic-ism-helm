@@ -1,0 +1,6 @@
+apiVersion: v2
+name: alethic-ism-state-sync-store
+description: A Helm chart for deploying the alethic-ism-state-sync-store module for database storage class
+type: application
+version: 0.1.0
+appVersion: "1.0"
