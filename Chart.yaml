@@ -41,4 +41,8 @@ dependencies:
     version: 0.1.0
     repository: "file://alethic-ism-processor-openai"
 
+  - name: alethic-ism-processor-anthropic
+    version: 0.1.0
+    repository: "file://alethic-ism-processor-anthropic"
+
 
