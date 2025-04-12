@@ -17,6 +17,9 @@ dependencies:
 - name: alethic-ism-state-router
   repository: file://alethic-ism-state-router
   version: 0.1.0
+- name: alethic-ism-usage
+  repository: file://alethic-ism-usage
+  version: 0.1.0
 - name: alethic-ism-state-sync-store
   repository: file://alethic-ism-state-sync-store
   version: 0.1.0
@@ -26,5 +29,5 @@ dependencies:
 - name: alethic-ism-processor-anthropic
   repository: file://alethic-ism-processor-anthropic
   version: 0.1.0
-digest: sha256:9dd92476a535ed6945a3501991f045fda934778d359554eb94ce757fe6a089bc
-generated: "2025-04-09T16:01:18.844249-07:00"
+digest: sha256:fe621be4949bb8a4c2234d04ea7ac2e1bc7d6c04c5fe3c6794032b78d1ed1f3d
+generated: "2025-04-09T16:24:31.356838-07:00"

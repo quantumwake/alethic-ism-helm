@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-usage
+  tag: "895f629"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-usage
+
+env:
+  variables:
+    API_ROOT_PATH: "/api/v1"
+    #REDIS_HOST: "http://localhost:8080"
+    #REDIS_PORT: ""
+    #REDIS_PASS: ""
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+#    DSN: ""

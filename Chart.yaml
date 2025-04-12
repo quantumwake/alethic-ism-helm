@@ -33,6 +33,10 @@ dependencies:
     version: 0.1.0
     repository: "file://alethic-ism-state-router"
 
+  - name: alethic-ism-usage
+    version: 0.1.0
+    repository: "file://alethic-ism-usage"
+
   - name: alethic-ism-state-sync-store
     version: 0.1.0
     repository: "file://alethic-ism-state-sync-store"

@@ -46,6 +46,7 @@ global:
     password: "ju$ta$imp|epA$sw0rd"   # for production, consider using a more secure method
     database: "alethic"
     port: 5432
+    sslmode: disable
     initdb:
         enabled: true
         image:
@@ -59,7 +60,8 @@ global:
 
   # application configuration
   golang:
-    dsn: "host=localhost port=5432 user=postgres password=postgres1 dbname=postgres sslmode=disable"
+    dsn: "{{ include \"alethichelm.golang.dburl\" . }}"
+#    dsn: "host=localhost port=5432 user=postgres password=postgres1 dbname=postgres sslmode=disable"
   python:
     dbUrl: "{{ include \"alethichelm.postgres.dburl\" . }}"
 #    dbUrl: "postgresql://postgres:postgres@alethic-postgresql.svc.default.cluster.local:5432/ism"
