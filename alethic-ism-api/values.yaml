@@ -25,13 +25,13 @@ ingress:
 env:
   variables:
     API_ROOT_PATH: "/api/v1"
-    HUGGING_FACE_TOKEN: "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"
+    HUGGING_FACE_TOKEN: "<enter your token here>"
     REDIS_HOST: "http://localhost:8080"
     REDIS_PORT: ""
     REDIS_PASS: ""
     LOG_LEVEL: "DEBUG"
     ROUTING_FILE: "/app/repo/.routing.yaml"
 #    DATABASE_URL: ""
-    SECRET_KEY: "35a77a8d34bf5e048d545c277ef0c2b4a272db55c53da6bb4566f2ee2268d559"
+    SECRET_KEY: "<between 16-64 character random alphanumeric string>"
     ENABLED_LOCAL_AUTH: true
     ENABLED_FIREBASE_AUTH: false
