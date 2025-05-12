@@ -132,3 +132,16 @@ make delete-cluster
 # Complete cleanup
 make clean
 ```
+
+## License
+
+Alethic Instruction State Machine (ISM) falls under a dual licensing model:
+
+1. **Open Source License**: AGPLv3 for open source usage
+2. **Commercial License**: Available for proprietary, closed-source usage
+
+For full license details, please see the [LICENSE.md](LICENSE.md) file.
+
+For commercial licensing inquiries:
+- **Email:** [licensing@quantumwake.io](mailto:licensing@quantumwake.io)
+- **Website:** [https://quantumwake.io](https://quantumwake.io)
