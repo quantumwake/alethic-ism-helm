@@ -66,6 +66,12 @@ For direct service access:
 make port-forward SVC=alethic-ism-ui PORT=8080
 ```
 
+### 4. Successful Deployment
+
+When all components are successfully deployed, your system should be ready to use:
+
+![Successful ISM Deployment](successful-deployment.png)
+
 ## Configuration
 
 The deployment can be customized by modifying values in:
