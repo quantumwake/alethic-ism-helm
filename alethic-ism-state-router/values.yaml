@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: krasaee/alethic-ism-state-router
-  tag: "424549c"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:

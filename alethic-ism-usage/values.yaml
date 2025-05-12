@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: krasaee/alethic-ism-usage
-  tag: "895f629"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:

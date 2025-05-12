@@ -51,7 +51,9 @@ global:
         enabled: true
         image:
             repository: krasaee/alethic-ism-db
-            tag: initdb.20250407
+            # tag: latest
+            # tag: initdb.20250407
+            tag: initdb.latest
             pullPolicy: Always
 
   nats:

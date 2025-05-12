@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: krasaee/alethic-ism-state-sync-store
-  tag: "a0dde06"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:

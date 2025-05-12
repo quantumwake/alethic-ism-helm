@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: krasaee/alethic-ism-monitor
-  tag: "f02163a"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:

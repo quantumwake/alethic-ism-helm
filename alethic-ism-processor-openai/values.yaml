@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: krasaee/alethic-ism-processor-openai
-  tag: "4f1e1eb"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:
