@@ -7,10 +7,16 @@ RELEASE_NAME := test-release
 KIND_CLUSTER_NAME := kind
 KUBE_CONTEXT := kind-$(KIND_CLUSTER_NAME)
 
+# Optional MITM certificate configuration
+# Set MITM_CERT_PATH to the path of your certificate file
+# Example: make create-cluster-cert MITM_CERT_PATH=/path/to/cert.crt
+MITM_CERT_PATH ?=
+MITM_CERT_NAME ?= mitm-proxy-cert.crt
+
 .PHONY: help create-cluster create-cluster-ingress delete-cluster install-nginx-ingress \
         install-chart delete-chart status check-pods install-dependencies all clean \
         create-namespace delete-namespace list-resources namespace-exists port-forward \
-        check-context
+        check-context create-cluster-cert create-cluster-ingress-cert inject-cert
 
 help:
 	@echo "Alethic ISM Helm Makefile"
@@ -20,6 +26,7 @@ help:
 	@echo "  RELEASE_NAME         = $(RELEASE_NAME)"
 	@echo "  KIND_CLUSTER_NAME    = $(KIND_CLUSTER_NAME)"
 	@echo "  KUBE_CONTEXT         = $(KUBE_CONTEXT)"
+	@echo "  MITM_CERT_PATH       = $(MITM_CERT_PATH) (optional)"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  help                 - Display this help"
@@ -28,7 +35,10 @@ help:
 	@echo "  delete-namespace     - Delete the Kubernetes namespace"
 	@echo "  namespace-exists     - Check if namespace exists"
 	@echo "  create-cluster       - Create a basic kind cluster"
+	@echo "  create-cluster-cert  - Create cluster and inject MITM cert (use MITM_CERT_PATH=/path/to/cert)"
 	@echo "  create-cluster-ingress - Create a kind cluster with ingress support"
+	@echo "  create-cluster-ingress-cert - Create cluster with ingress and inject MITM cert"
+	@echo "  inject-cert          - Inject MITM certificate into existing cluster nodes"
 	@echo "  delete-cluster       - Delete the kind cluster"
 	@echo "  install-nginx-ingress - Install NGINX ingress controller"
 	@echo "  install-chart        - Install Alethic ISM Helm chart"
@@ -40,6 +50,11 @@ help:
 	@echo "  port-forward         - Forward ports for specific services (usage: make port-forward SVC=service-name PORT=8080)"
 	@echo "  all                  - Create cluster with ingress, namespace, and install chart"
 	@echo "  clean                - Delete chart, namespace, and cluster"
+	@echo ""
+	@echo "MITM Certificate Usage Examples:"
+	@echo "  make create-cluster-cert MITM_CERT_PATH=/path/to/proxy-cert.crt"
+	@echo "  make create-cluster-ingress-cert MITM_CERT_PATH=/path/to/proxy-cert.crt"
+	@echo "  make inject-cert MITM_CERT_PATH=/path/to/proxy-cert.crt  # For existing clusters"
 
 # Namespace operations
 create-namespace:
@@ -71,6 +86,42 @@ create-cluster-ingress:
 delete-cluster:
 	@echo "Deleting kind cluster..."
 	kind delete cluster --name $(KIND_CLUSTER_NAME)
+
+create-cluster-cert: create-cluster
+	@if [ -n "$(MITM_CERT_PATH)" ]; then \
+		echo "Injecting MITM certificate into kind cluster..."; \
+		$(MAKE) inject-cert; \
+	else \
+		echo "No MITM_CERT_PATH specified. Cluster created without certificate injection."; \
+	fi
+
+create-cluster-ingress-cert: create-cluster-ingress
+	@if [ -n "$(MITM_CERT_PATH)" ]; then \
+		echo "Injecting MITM certificate into kind cluster with ingress..."; \
+		$(MAKE) inject-cert; \
+	else \
+		echo "No MITM_CERT_PATH specified. Cluster created without certificate injection."; \
+	fi
+
+inject-cert:
+	@if [ -z "$(MITM_CERT_PATH)" ]; then \
+		echo "Error: MITM_CERT_PATH is not set. Usage: make inject-cert MITM_CERT_PATH=/path/to/cert.crt"; \
+		exit 1; \
+	fi
+	@if [ ! -f "$(MITM_CERT_PATH)" ]; then \
+		echo "Error: Certificate file not found at $(MITM_CERT_PATH)"; \
+		exit 1; \
+	fi
+	@echo "Injecting certificate from $(MITM_CERT_PATH) into all nodes..."
+	@for node in $$(kind get nodes --name $(KIND_CLUSTER_NAME)); do \
+		echo "Copying certificate to node: $$node"; \
+		docker cp "$(MITM_CERT_PATH)" "$$node:/usr/local/share/ca-certificates/$(MITM_CERT_NAME)"; \
+		echo "Updating CA certificates on node: $$node"; \
+		docker exec "$$node" update-ca-certificates; \
+		echo "Restarting containerd on node: $$node"; \
+		docker exec "$$node" systemctl restart containerd; \
+	done
+	@echo "Certificate injection completed. You may need to restart pods for changes to take effect."
 
 install-nginx-ingress:
 	@echo "Installing NGINX ingress controller..."
