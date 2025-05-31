@@ -1,0 +1,54 @@
+name: Test Helm Chart
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.12.0'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.5.0
+
+      - name: Run chart-testing (lint)
+        run: ct lint --all --config .github/ct-config.yaml
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.5.0
+        with:
+          config: kind-config-ingress.yaml
+
+      - name: Install NGINX ingress controller
+        run: |
+          kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=90s
+
+      - name: Run chart-testing (install)
+        run: ct install --all --config .github/ct-config.yaml
+
+      - name: Run Helm test
+        run: |
+          helm install test-release . --namespace default --wait
+          kubectl get pods -n default
+          helm test test-release --namespace default

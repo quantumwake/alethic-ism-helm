@@ -61,6 +61,7 @@ spec:
             {{- end }}
           ports:
             - containerPort: {{ .Values.service.port }}
-      imagePullSecrets:
-        - name: regcred
+# Define custom docker registry credentials secret
+#      imagePullSecrets:
+#        - name: regcred
 

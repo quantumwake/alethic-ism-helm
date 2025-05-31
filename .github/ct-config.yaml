@@ -1,0 +1,17 @@
+# Chart Testing config
+remote: origin
+target-branch: main
+chart-dirs:
+  - .
+  - alethic-ism-api
+  - alethic-ism-monitor
+  - alethic-ism-processor-anthropic
+  - alethic-ism-processor-openai
+  - alethic-ism-state-router
+  - alethic-ism-state-sync-store
+  - alethic-ism-ui
+  - alethic-ism-usage
+chart-repos:
+  - nats=https://nats-io.github.io/k8s/helm/charts/
+helm-extra-args: --timeout 600s
+debug: true
