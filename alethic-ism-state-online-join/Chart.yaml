@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for deploying the alethic-ism-state-online-join module
+name: alethic-ism-state-online-join
+type: application
+version: 0.1.0

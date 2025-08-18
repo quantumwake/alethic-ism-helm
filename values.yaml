@@ -1,4 +1,53 @@
 ###############################################################################
+#### Chart Enable/Disable Flags
+###############################################################################
+# Enable/disable individual charts
+alethic-ism-api:
+  enabled: true
+
+alethic-ism-monitor:
+  enabled: true
+
+alethic-ism-processor-anthropic:
+  enabled: true
+
+alethic-ism-processor-openai:
+  enabled: true
+
+alethic-ism-processor-gemini:
+  enabled: true
+
+alethic-ism-processor-python:
+  enabled: true
+
+alethic-ism-processor-mako:
+  enabled: true
+
+alethic-ism-state-router:
+  enabled: true
+
+alethic-ism-state-sync-store:
+  enabled: true
+
+alethic-ism-stream-api:
+  enabled: true
+
+alethic-ism-query-api:
+  enabled: true
+
+alethic-ism-state-online-join:
+  enabled: true
+
+alethic-ism-state-online-merge:
+  enabled: true
+
+alethic-ism-ui:
+  enabled: true
+
+alethic-ism-usage:
+  enabled: true
+
+###############################################################################
 #### Local NATS Configuration values
 ###############################################################################
 # NATS settings

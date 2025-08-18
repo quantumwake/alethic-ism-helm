@@ -25,6 +25,7 @@ env:
     PUBLIC_URL: "/ui"
     REACT_APP_ENVIRONMENT: "local"
     REACT_APP_ISM_API_BASE_URL: "http://localhost/api/v1"
+    REACT_APP_ISM_QUERY_API_BASE_URL: "http://localhost/query"
 #    REACT_APP_FIREBASE_API_KEY: ""
 #    REACT_APP_FIREBASE_AUTH_DOMAIN: ""
 #    REACT_APP_FIREBASE_PROJECT_ID: ""

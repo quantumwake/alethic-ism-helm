@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-query-api
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-query-api
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  host: "localhost"
+  enabled: true
+
+env:
+  variables:
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+    FIREBASE_CREDENTIALS_FILE: "/app/config/firebase-credentials.json"
+#    DSN: ""

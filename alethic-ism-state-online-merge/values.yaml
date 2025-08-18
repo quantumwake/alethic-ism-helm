@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-state-online-merge
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-state-online-merge
+
+service:
+  type: ClusterIP
+  port: 8080
+
+env:
+  variables:
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+#    DSN: ""

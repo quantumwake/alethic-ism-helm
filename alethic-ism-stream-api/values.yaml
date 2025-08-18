@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-stream-api
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-stream-api
+
+service:
+  type: ClusterIP
+  port: 8080
+
+env:
+  variables:
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+    FIREBASE_CREDENTIALS_FILE: "/app/config/firebase-credentials.json"
+#    NATS_URL: ""

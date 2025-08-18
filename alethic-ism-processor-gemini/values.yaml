@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-processor-gemini
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-processor-gemini
+
+env:
+  variables:
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+    GEMINI_API_KEY_FILE: ".api-key"
+#    DATABASE_URL: ""

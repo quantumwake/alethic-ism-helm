@@ -20,33 +20,76 @@ dependencies:
   - name: alethic-ism-api
     version: 0.1.0
     repository: "file://alethic-ism-api"
+    condition: alethic-ism-api.enabled
 
   - name: alethic-ism-ui
     version: 0.1.0
     repository: "file://alethic-ism-ui"
+    condition: alethic-ism-ui.enabled
 
   - name: alethic-ism-monitor
     version: 0.1.0
     repository: "file://alethic-ism-monitor"
+    condition: alethic-ism-monitor.enabled
 
   - name: alethic-ism-state-router
     version: 0.1.0
     repository: "file://alethic-ism-state-router"
+    condition: alethic-ism-state-router.enabled
 
   - name: alethic-ism-usage
     version: 0.1.0
     repository: "file://alethic-ism-usage"
+    condition: alethic-ism-usage.enabled
 
   - name: alethic-ism-state-sync-store
     version: 0.1.0
     repository: "file://alethic-ism-state-sync-store"
+    condition: alethic-ism-state-sync-store.enabled
 
   - name: alethic-ism-processor-openai
     version: 0.1.0
     repository: "file://alethic-ism-processor-openai"
+    condition: alethic-ism-processor-openai.enabled
 
   - name: alethic-ism-processor-anthropic
     version: 0.1.0
     repository: "file://alethic-ism-processor-anthropic"
+    condition: alethic-ism-processor-anthropic.enabled
+
+  - name: alethic-ism-processor-gemini
+    version: 0.1.0
+    repository: "file://processor-gemini"
+    condition: alethic-ism-processor-gemini.enabled
+
+  - name: alethic-ism-processor-python
+    version: 0.1.0
+    repository: "file://processor-python"
+    condition: alethic-ism-processor-python.enabled
+
+  - name: alethic-ism-processor-mako
+    version: 0.1.0
+    repository: "file://processor-mako"
+    condition: alethic-ism-processor-mako.enabled
+
+  - name: alethic-ism-stream-api
+    version: 0.1.0
+    repository: "file://stream-api"
+    condition: alethic-ism-stream-api.enabled
+
+  - name: alethic-ism-query-api
+    version: 0.1.0
+    repository: "file://query-api"
+    condition: alethic-ism-query-api.enabled
+
+  - name: alethic-ism-state-online-join
+    version: 0.1.0
+    repository: "file://state-online-join"
+    condition: alethic-ism-state-online-join.enabled
+
+  - name: alethic-ism-state-online-merge
+    version: 0.1.0
+    repository: "file://state-online-merge"
+    condition: alethic-ism-state-online-merge.enabled
 
 

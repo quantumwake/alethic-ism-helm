@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for deploying the alethic-ism-query-api module
+name: alethic-ism-query-api
+type: application
+version: 0.1.0

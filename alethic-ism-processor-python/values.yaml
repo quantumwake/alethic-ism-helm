@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-processor-python
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-processor-python
+
+env:
+  variables:
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+#    DATABASE_URL: ""

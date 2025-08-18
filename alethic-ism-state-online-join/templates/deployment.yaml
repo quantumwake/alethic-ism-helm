@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application.state.online.join.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.deployment.labels.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.labels.app }}
+    spec:
+      volumes:
+        - name: routing-secret-volume
+          secret:
+            secretName: {{ tpl .Values.global.routing.secretName . }}
+            items:
+              - key: .routing.yaml
+                path: .routing.yaml
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: routing-secret-volume
+              mountPath: /app/repo/.routing.yaml
+              subPath: .routing.yaml
+              readOnly: true
+          env:
+            {{- $root := . }}
+            {{- range $key, $value := .Values.env.variables }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.state.online.join.fullname" $root }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- if or (not .Values.env.variables.DSN) (empty .Values.env.variables.DSN) }}
+            - name: DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.state.online.join.fullname" . }}
+                  key: DSN
+            {{- end }}
+      imagePullSecrets:
+        - name: regcred

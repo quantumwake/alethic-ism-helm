@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application.stream.api.fullname" . }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.deployment.labels.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.labels.app }}
+    spec:
+      volumes:
+        - name: routing-secret-volume
+          secret:
+            secretName: {{ tpl .Values.global.routing.secretName . }}
+            items:
+              - key: .routing.yaml
+                path: .routing.yaml
+        - name: firebase-secret-volume
+          secret:
+            secretName: alethic-ism-firebase-secret
+            items:
+              - key: firebase-credentials.json
+                path: firebase-credentials.json
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: routing-secret-volume
+              mountPath: /app/repo/.routing.yaml
+              subPath: .routing.yaml
+              readOnly: true
+            - name: firebase-secret-volume
+              mountPath: /app/config/firebase-credentials.json
+              subPath: firebase-credentials.json
+              readOnly: true
+          env:
+            {{- $root := . }}
+            {{- range $key, $value := .Values.env.variables }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.stream.api.fullname" $root }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- if or (not .Values.env.variables.NATS_URL) (empty .Values.env.variables.NATS_URL) }}
+            - name: NATS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.stream.api.fullname" . }}
+                  key: NATS_URL
+            {{- end }}
+      imagePullSecrets:
+        - name: regcred
