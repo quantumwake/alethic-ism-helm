@@ -2,7 +2,7 @@
 # Provides utility commands for managing the Alethic ISM Kubernetes deployment
 
 # Configuration
-NAMESPACE := default
+NAMESPACE := alethic
 RELEASE_NAME := test-release
 KIND_CLUSTER_NAME := kind
 KUBE_CONTEXT := kind-$(KIND_CLUSTER_NAME)
@@ -126,11 +126,24 @@ inject-cert:
 install-nginx-ingress:
 	@echo "Installing NGINX ingress controller..."
 	kubectl --context $(KUBE_CONTEXT) apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+	@echo "Waiting for NGINX ingress controller to be ready..."
+	@for i in {1..60}; do \
+		if kubectl --context $(KUBE_CONTEXT) get pods -n ingress-nginx -l app.kubernetes.io/component=controller 2>/dev/null | grep -q ingress; then \
+			kubectl --context $(KUBE_CONTEXT) wait --namespace ingress-nginx \
+				--for=condition=ready pod \
+				--selector=app.kubernetes.io/component=controller \
+				--timeout=120s && break; \
+		fi; \
+		echo "Waiting for ingress controller pod to be created... ($$i/60)"; \
+		sleep 2; \
+	done
 
 # Helm chart operations
 install-chart: create-namespace
+	@echo "Updating Helm chart dependencies..."
+	helm dependency update
 	@echo "Installing Alethic ISM Helm chart in namespace $(NAMESPACE)..."
-	helm install $(RELEASE_NAME) . --debug -n $(NAMESPACE) --kube-context $(KUBE_CONTEXT)
+	helm install $(RELEASE_NAME) . -n $(NAMESPACE) --kube-context $(KUBE_CONTEXT) --timeout 10m
 
 delete-chart:
 	@echo "Deleting Alethic ISM Helm chart from namespace $(NAMESPACE)..."

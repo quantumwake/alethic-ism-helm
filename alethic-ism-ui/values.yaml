@@ -3,7 +3,8 @@ replicaCount: 1
 image:
   repository: krasaee/alethic-ism-ui
 #  tag: "b619a89"
-  tag: "local"
+#  tag: "local"
+  tag: "latest"
   pullPolicy: Always
 
 deployment:

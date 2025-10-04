@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "application.stream.api.fullname" . }}-deployment
+  name: {{ include "application.processor.openrouter.fullname" . }}-deployment
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.deployment.labels.app }}
@@ -26,8 +26,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - containerPort: 8080
           volumeMounts:
             - name: routing-secret-volume
               mountPath: /app/repo/.routing.yaml
@@ -39,15 +37,22 @@ spec:
             - name: {{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "application.stream.api.fullname" $root }}
+                  name: {{ include "application.processor.openrouter.fullname" $root }}
                   key: {{ $key }}
             {{- end }}
-            {{- if or (not .Values.env.variables.NATS_URL) (empty .Values.env.variables.NATS_URL) }}
-            - name: NATS_URL
+            {{- if or (not .Values.env.variables.DATABASE_URL) (empty .Values.env.variables.DATABASE_URL) }}
+            - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "application.stream.api.fullname" . }}
-                  key: NATS_URL
+                  name: {{ include "application.processor.openrouter.fullname" . }}
+                  key: DATABASE_URL
+            {{- end }}
+            {{- if or (not .Values.env.variables.OPENROUTER_API_KEY) (empty .Values.env.variables.OPENROUTER_API_KEY) }}
+            - name: OPENROUTER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "application.processor.openrouter.fullname" . }}
+                  key: OPENROUTER_API_KEY
             {{- end }}
       imagePullSecrets:
         - name: regcred

@@ -22,12 +22,6 @@ spec:
             items:
               - key: .routing.yaml
                 path: .routing.yaml
-        - name: firebase-secret-volume
-          secret:
-            secretName: alethic-ism-firebase-secret
-            items:
-              - key: firebase-credentials.json
-                path: firebase-credentials.json
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,10 +32,6 @@ spec:
             - name: routing-secret-volume
               mountPath: /app/repo/.routing.yaml
               subPath: .routing.yaml
-              readOnly: true
-            - name: firebase-secret-volume
-              mountPath: /app/config/firebase-credentials.json
-              subPath: firebase-credentials.json
               readOnly: true
           env:
             {{- $root := . }}

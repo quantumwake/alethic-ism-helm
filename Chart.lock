@@ -29,5 +29,29 @@ dependencies:
 - name: alethic-ism-processor-anthropic
   repository: file://alethic-ism-processor-anthropic
   version: 0.1.0
-digest: sha256:fe621be4949bb8a4c2234d04ea7ac2e1bc7d6c04c5fe3c6794032b78d1ed1f3d
-generated: "2025-04-09T16:24:31.356838-07:00"
+- name: alethic-ism-processor-openrouter
+  repository: file://alethic-ism-processor-openrouter
+  version: 0.1.0
+- name: alethic-ism-processor-gemini
+  repository: file://alethic-ism-processor-gemini
+  version: 0.1.0
+- name: alethic-ism-processor-python
+  repository: file://alethic-ism-processor-python
+  version: 0.1.0
+- name: alethic-ism-processor-mako
+  repository: file://alethic-ism-processor-mako
+  version: 0.1.0
+- name: alethic-ism-stream-api
+  repository: file://alethic-ism-stream-api
+  version: 0.1.0
+- name: alethic-ism-query-api
+  repository: file://alethic-ism-query-api
+  version: 0.1.0
+- name: alethic-ism-state-online-join
+  repository: file://alethic-ism-state-online-join
+  version: 0.1.0
+- name: alethic-ism-state-online-merge
+  repository: file://alethic-ism-state-online-merge
+  version: 0.1.0
+digest: sha256:1c4fb5f793cb9f2167925b8a859a4e8405325e66631ce95709328040b62dc1dc
+generated: "2025-10-03T11:52:42.005664+02:00"

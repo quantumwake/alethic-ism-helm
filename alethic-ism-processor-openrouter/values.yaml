@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: krasaee/alethic-ism-processor-openrouter
+  tag: "latest"
+  pullPolicy: Always
+
+deployment:
+  labels:
+    app: alethic-ism-processor-openrouter
+
+env:
+  variables:
+    API_ROOT_PATH: "/api/v1"
+#    REDIS_HOST: "http://localhost:8080"
+#    REDIS_PORT: ""
+#    REDIS_PASS: ""
+    LOG_LEVEL: "DEBUG"
+    ROUTING_FILE: "/app/repo/.routing.yaml"
+    OPENROUTER_API_KEY_FILE: ".api-key"
+#    DATABASE_URL: ""

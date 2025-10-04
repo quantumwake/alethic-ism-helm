@@ -57,39 +57,44 @@ dependencies:
     repository: "file://alethic-ism-processor-anthropic"
     condition: alethic-ism-processor-anthropic.enabled
 
+  - name: alethic-ism-processor-openrouter
+    version: 0.1.0
+    repository: "file://alethic-ism-processor-openrouter"
+    condition: alethic-ism-processor-openrouter.enabled
+
   - name: alethic-ism-processor-gemini
     version: 0.1.0
-    repository: "file://processor-gemini"
+    repository: "file://alethic-ism-processor-gemini"
     condition: alethic-ism-processor-gemini.enabled
 
   - name: alethic-ism-processor-python
     version: 0.1.0
-    repository: "file://processor-python"
+    repository: "file://alethic-ism-processor-python"
     condition: alethic-ism-processor-python.enabled
 
   - name: alethic-ism-processor-mako
     version: 0.1.0
-    repository: "file://processor-mako"
+    repository: "file://alethic-ism-processor-mako"
     condition: alethic-ism-processor-mako.enabled
 
   - name: alethic-ism-stream-api
     version: 0.1.0
-    repository: "file://stream-api"
+    repository: "file://alethic-ism-stream-api"
     condition: alethic-ism-stream-api.enabled
 
   - name: alethic-ism-query-api
     version: 0.1.0
-    repository: "file://query-api"
+    repository: "file://alethic-ism-query-api"
     condition: alethic-ism-query-api.enabled
 
   - name: alethic-ism-state-online-join
     version: 0.1.0
-    repository: "file://state-online-join"
+    repository: "file://alethic-ism-state-online-join"
     condition: alethic-ism-state-online-join.enabled
 
   - name: alethic-ism-state-online-merge
     version: 0.1.0
-    repository: "file://state-online-merge"
+    repository: "file://alethic-ism-state-online-merge"
     condition: alethic-ism-state-online-merge.enabled
 
 
